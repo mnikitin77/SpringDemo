@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Custom styles -->
+    <link  rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Help</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <header th:replace="fragments/header.html :: header (${'/help'})"></header>
+
+    <!-- Begin page content -->
+    <main role="main" class="flex-shrink-0 container">
+        <div class="d-flex w-100 flex-column align-items-bottom pt-3 pb-4 mb-3">
+            <h3 style="color: #6f42c1;">Web demo application</h3>
+            <p class="text-muted"><b>Products</b>: displays a list of the products stored in the DB. The "filter ->" button shows the filtering form. There you can set min and/or max price, as well as the number of rows to display on each output page. Finally you can set the sorting column and mode.</p>            
+            <p class="text-muted">The "add product" button is available to the users with the roles ROLE_ADMIN and ROLE_SUPERUSER. On the product list drilling down to the product item page in order to edit it is available under the same condition, as well as the "garbage busket" buttons to delete the item.</p>
+            <p class="text-muted"><b>Edit products</b>: contains a simple form for adding or editing a product item.</p>
+            <p class="text-muted"><b>Users</b>: displays a list of all the users and their roles. The page is available to the roles ROLE_ADMIN and ROLE_SUPERUSER. The button "new user" and drilling down via the link on a user's name to the "Edit users" page are available to the ROLE_ADMIN only.</p>
+            <p class="text-muted"><b>Edit users</b>: provides a form to create a new user or edit existing one. It is accessible to the ROLE_ADMIN only.</p>
+            <p class="text-muted">Roles:</p>
+            <ul>
+                <li class="text-muted">ROLE_USER - must be assigned to any user of the web app</li>
+                <li class="text-muted">ROLE_SUPERUSER</li>
+                <li class="text-muted">ROLE_ADMIN</li>
+                <li class="text-muted">ROLE_API_PRODUCT_READ - permits GET method to the Product REST API</li>
+                <li class="text-muted">ROLE_API_PRODUCT_ALL - permits POST, PUT and DELETE methos to the Product REST API</li>
+            </ul>
+            <p class="text-muted mb-5">The "Enabled" checkbox is reserved for fututre use.</p>
+
+            <h3 style="color: #6f42c1;">REST API</h3>            
+            <p>HTTP requests of this API to the Product resource require authorization. There are two users in the DB - <b>api-user</b> (password <i>Apiuser0#</i>) with the role ROLE_API_PRODUCT_READ and <b>api-admin</b> (password <i>Apiadmin0#</i>) with the role ROLE_API_PRODUCT_ALL.</p>
+            <p><b>GET</b></p>
+            <p><span class="text-monospace">http://localhost:8080/spring/api/v1/products</span> - to retrieve all the items.</p>
+            <p>To retrieve a certain item you should add its ID, i.e. <span class="text-monospace">http://localhost:8080/spring/api/v1/products/3</span>.</p>
+            <p><b>POST</b></p>
+            <p>You should use the POST method to the same URI (<span class="text-monospace">http://localhost:8080/spring/api/v1/products</span>) if you need to add a new item. To do that you must add a header <span class="text-monospace">Content-Type</span> set to <span class="text-monospace">application/json</span> and provide the request body with JSON.</p>
+            <p>Example:</p>
+            <p class="text-monospace">{"id": -1, "name": "New product", "price": 321.45}</p>
+            <p><b>PUT</b></p>
+            <p>Send a PUT request to the above mentioned URI in case you need to modify an item. To do so add a header <span class="text-monospace">Content-Type</span> set to <span class="text-monospace">application/json</span> and provide the request body with JSON specifying the ID of the item.</p>
+            <p>Example:</p>
+            <p class="text-monospace">{"id": 100500, "name": "New product", "price": 123.45}</p>
+            <p><b>DELETE</b></p>
+            <p>To delete an item send a DELETE request to the URI specifying the ID of the required item like this <span class="text-monospace">http://localhost:8080/spring/api/v1/products/21</span>. The method returns the deleted item in JSON.</p>
+        </div>      
+    </main>
+
+    <footer th:replace="fragments/footer.html :: footer" class="footer mt-auto py-3">
+    </footer>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/0fac6e7586.js" crossorigin="anonymous"></script>
+</body>
+</html>

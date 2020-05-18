@@ -1,0 +1,57 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <header th:fragment="header(active_page)">
+        <nav class="top container navbar navbar-expand-lg navbar-dark">
+            <div class="d-flex flex-column w-100">
+                <div class="collapse navbar-collapse d-flex justify-content-between w-100" id="navbarUpper">
+                    <div class="collapse navbar-collapse d-flex justify-content-start">
+                        <span class="navbar-brand">Spring Demo app</span>
+                    </div>
+                    <div class="collapse navbar-collapse d-flex justify-content-end"
+                        th:unless="${active_page == '/login'}">
+                        <span class="navbar-text">
+                            <small>loged user:</small>&nbsp;<span sec:authentication="principal.username"></span>               
+                        </span>
+                    </div>
+                </div>                
+                <div class="collapse navbar-collapse d-flex justify-content-between w-100" id="navbarNav"
+                    th:unless="${active_page == '/login'}">
+                    <ul class="navbar-nav">
+                        <li class="nav-item" th:classappend="${active_page == '/'} ? 'active'">
+                            <a class="nav-link" th:href="@{/}">Products<span th:if="${active_page == '/'}" class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item" 
+                            th:classappend="${active_page == '/product'} ? 'active'"
+                            sec:authorize="hasAnyRole('ADMIN', 'SUPERUSER')">
+                            <a class="nav-link" th:href="@{/product}">Edit products<span th:if="${active_page == '/product'}" class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item" 
+                            th:classappend="${active_page == '/userlist'} ? 'active'"
+                            sec:authorize="hasAnyRole('ADMIN', 'SUPERUSER')">
+                            <a class="nav-link" th:href="@{/userlist}">Users<span th:if="${active_page == '/userlist'}" class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item" 
+                            th:classappend="${active_page == '/user'} ? 'active'"
+                            sec:authorize="hasAnyRole('ADMIN')">
+                            <a class="nav-link" th:href="@{/user}">Edit users<span th:if="${active_page == '/user'}" class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item" 
+                            th:classappend="${active_page == '/help'} ? 'active'">
+                            <a class="nav-link" th:href="@{/help}">Help<span th:if="${active_page == '/help'}" class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <form class="form-inline" th:action="@{/logout}" method="post">                            
+                                <button type="submit" class="btn nav-link">Log out</button>
+                            </form>
+                        </li>            
+                    </ul>
+                </div>
+                <div class="collapse navbar-collapse d-flex justify-content-between w-100" style="height: 42px;" id="navbarNav"
+                    th:if="${active_page == '/login'}">
+                </div>
+            </div>
+        </nav>
+    </header>
+</html>

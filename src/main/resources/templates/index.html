@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Custom styles -->
+    <link  rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Products</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <header th:replace="fragments/header.html :: header (${'/'})"></header>
+
+    <!-- Begin page content -->
+    <main role="main" class="flex-shrink-0 container">
+        <div class="pt-3 pb-4 mb-3">
+            <h3 class="table__header__header">Products</h3>
+            <p class="text-left h6">Below are all the products initially stored in the repository at the server. You also may add or remove product items.</p>
+        </div>
+        <form id="toProductForm" th:action="@{/product}" method="GET"></form>
+            <div class="d-flex justify-content-between mb-5">
+                <div class="d-flex justify-content-start align-items-center mx-3" style="width: 180px;">
+                    <button sec:authorize="hasAnyRole('ADMIN', 'SUPERUSER')" type="submit" form="toProductForm" class="btn btn-outline-primary btn-block">add product</button>
+                </div>
+                <div class="d-flex justify-content-end align-items-center container">                        
+                    <a class="btn btn-link" style="text-decoration: none;" data-toggle="collapse" href="#filterBox" role="button" aria-expanded="false" aria-controls="filterBox">
+                        filter&nbsp; <i class="fas fa-arrow-right"></i>
+                    </a>                                                    
+                </div>
+            </div>
+            <div class="collapse" id="filterBox">
+                <div class="card card-body mb-5">                    
+                    <form id="filterForm" class="d-flex flex-column align-items-start" th:action="@{/}" method="GET">
+                        <div class="d-flex justify-content-between mb-3 w-100">
+                            <div class="d-flex justify-content-between w-75">
+                                <div class="d-flex justify-content-start align-items-center mr-3">
+                                    <label class="h6" style="width: 200px;" for="minPrice">Minimum price</label>
+                                    <input type="number" class="form-control" id="minPrice" name="minPrice" placeholder="">
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center mr-3">
+                                    <label class="h6" style="width: 200px;" for="maxPrice">Maximum price</label>
+                                    <input type="number" class="form-control" id="maxPrice" name="maxPrice" placeholder="">
+                                </div>
+                            </div>            
+                            <div style="width: 150px;">
+                                <button type="submit" class="btn btn-outline-primary btn-block">apply</button>
+                            </div>                    
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="d-flex justify-content-left align-items-center w-50">
+                                <label class="h6" style="width:128px" for="sort">Sort by:</label>
+                                <select class="form-control" style="max-width: 256px;" form="filterForm" name="sortby" id="sortby">
+                                    <option th:selected="${sortby == '#'}">#</option>
+                                    <option th:selected="${sortby == 'Product'}">Product</option>
+                                    <option th:selected="${sortby == 'Price'}">Price</option>
+                                </select>
+                                <div class="form-check form-check-inline mr-0 ml-3">                                    
+                                    <input class="form-check-input" type="radio" name="sortdir" id="sort1" value="true" th:checked="${sortdir != false}">
+                                    <label class="form-check-label" for="sort1">asc</label>
+                                </div>
+                                <div class="form-check form-check-inline mr-0 ml-3">
+                                    <input class="form-check-input" type="radio" name="sortdir" id="sort2" value="false" th:checked="${sortdir == false}">
+                                    <label class="form-check-label" for="sort2">desc</label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center w-50">
+                                <p class="h6 w-40 mb-1">Number of rows per page:</p>
+
+                                <div class="form-check form-check-inline mr-0 ml-3">                                    
+                                    <input class="form-check-input" type="radio" name="rows" id="option1" value="5"  
+                                        th:checked="(${itemscount} != 10) and (${itemscount} != 20) and (${itemscount} != 50)">
+                                    <label class="form-check-label" for="option1">5</label>
+                                </div>
+                                <div class="form-check form-check-inline mr-0 ml-3">
+                                    <input class="form-check-input" type="radio" name="rows" id="option2" value="10" 
+                                    th:checked="${itemscount} == 10">
+                                    <label class="form-check-label" for="option2">10</label>
+                                </div>
+                                <div class="form-check form-check-inline mr-0 ml-3">
+                                    <input class="form-check-input" type="radio" name="rows" id="option3" value="20" 
+                                    th:checked="${itemscount} == 20">
+                                    <label class="form-check-label" for="option3">20</label>
+                                </div>
+                                <div class="form-check form-check-inline mr-0 ml-3">
+                                    <input class="form-check-input" type="radio" name="rows" id="option4" value="50" 
+                                    th:checked="${itemscount} == 50">
+                                    <label class="form-check-label" for="option4">50</label>
+                                </div>
+                            </div> 
+                        </div>                                           
+                        </div>                    
+                    </form>
+                </div>
+            </div>
+            <table class="container table table-striped table-hover mb-5">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 110px;">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col" class="text-right">Price</th>
+                        <th scope="col" style="width: 56px;"
+                            sec:authorize="hasAnyRole('ADMIN', 'SUPERUSER')">
+                            <div style="width: 40px; text-align: center;">
+                                <i class="fas fa-trash"></i>
+                            </div>                                        
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${pagecontent.hasContent()}" 
+                        th:each="product: ${pagecontent.getContent()}">
+                        <td>
+                            <a style="text-decoration: none;"
+                                th:href="@{/product/} + ${product.id}" 
+                                sec:authorize="hasAnyRole('ADMIN', 'SUPERUSER')" >
+                                <span>[[${product.id}]]</span>
+                            </a>
+                            <span 
+                                sec:authorize="!hasAnyRole('ADMIN', 'SUPERUSER')">
+                                [[${product.id}]]
+                            </span>
+                        </td>
+                        <td th:text="${product.name}">PRD</td>
+                        <td class="text-right" th:text="${product.price} + ' руб.'">PRC</td>
+                        <td sec:authorize="hasAnyRole('ADMIN', 'SUPERUSER')">
+                            <form th:action="@{/{id}(id=${product.id})}" th:method="DELETE">
+                                <button type="submit" class="btn btn-link py-0" style="text-decoration: none;"><i class="fas fa-trash" style="color: lightgrey;"></i></button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <tr th:unless="${pagecontent.hasContent()}">
+                        <td colspan="4" class="text-center">
+                            No items found
+                        </td>
+                    </tr>
+                </tbody>
+            </table>    
+            <nav th:if="${pagecontent.hasContent()}"
+                th:with="min=${minprice} == null ? '' : ${minprice}, max=${maxprice} == null ? '' : ${maxprice}, current=${pagecontent.hasContent()} ? ${pagecontent.getNumber() + 1} : 0" aria-label="paging">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${current le 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/(minPrice=${minprice}, maxPrice=${maxprice}, page=${current - 1}, sortby=${sortby}, sortdir=${sortdir}, rows=${itemscount})}" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>                                                
+                    <li th:each="page: ${#numbers.sequence(1, pagecontent.getTotalPages())}" 
+                        th:classappend="${page} == ${current} ? ' active'" 
+                        th:attr="aria-current=${page} == ${current} ? 'page'"
+                        class="page-item">
+                        <a class="page-link" 
+                            th:href="@{/(minPrice=${minprice}, maxPrice=${maxprice}, page=${page}, sortby=${sortby}, sortdir=${sortdir}, rows=${itemscount})}">[[${page}]]
+                            <span th:attr="class=(${page} == ${current} ? 'sr-only')"></span>
+                        </a>
+                    </li>                    
+                    <li class="page-item" th:classappend="${current} gt ${pagecontent.getTotalPages() - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/(minPrice=${min}, maxPrice=${max}, page=${current + 1}, sortby=${sortby}, sortdir=${sortdir}, rows=${itemscount})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+    </main>
+
+    <footer th:replace="fragments/footer.html :: footer" class="footer mt-auto py-3">
+    </footer>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/0fac6e7586.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th ="http://www.thymeleaf.org" lang ="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Custom styles -->
+    <link  rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <title>Login</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header th:replace="fragments/header.html :: header (${'/login'})"></header>
+
+    <main role="main" class="container d-flex flex-column align-items-center">
+        <div id="loginbox" style="margin-top:100px;" class="mainbox col-md-3col-md-offset-2 col-sm-6 col-sm-offset-2"> 
+            <div class="card border-light">
+                <div class="card-header">
+                    <div class="card-title">Sign In</div>
+                </div>
+                <div style = "padding-top:30px" class = "card-body">
+                    <form th:action="@{/login}" method="POST" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-xs-15">
+                                <div>
+                                    <div th:if="${param.error}">
+                                        <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+                                            Invalid username or password
+                                        </div>
+                                    </div>
+                                    <div th:if="${param.logout}">
+                                        <div class="alert alert-success col-xs-offset-1 col-xs-10">
+                                            You have been logged out.
+                                        </div>
+                                    </div>                            
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom:25px" class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <svg class="bi bi-person-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                                      </svg>
+                                </span>
+                            </div>
+                            <input type="text" name="username" placeholder="username" class="form-control">
+                        </div>
+                        <div style="margin-bottom:25px" class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <svg class="bi bi-lock-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="11" height="9" x="2.5" y="7" rx="2"/>
+                                        <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 117 0v3h-1V4a2.5 2.5 0 00-5 0v3h-1V4z" clip-rule="evenodd"/>
+                                    </svg>
+                                </span>
+                            </div>                            
+                            <input type="password" name="password" placeholder="password" class="form-control">
+                        </div>
+                        <div style="margin-top:10px" class="form-group">
+                            <div class="col-sm-6 controls">
+                                <button type="submit" class="btn btn-light">Login</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex w-100 flex-column align-items-bottom px-4 mt-2">
+            <h3 style="color: #6f42c1;">About the app</h3>
+            <p class="text-muted">This is a simple demo web application built on Java and with help of Spring Boot, Spring MVC, Spring Secutiry, Spring Data JPA and Thymeleaf. The application UI is designed using the Bootstrap framework. The source code you find <a href="https://github.com/mnikitin77/SpringDemo" class="text-decoration-none" target="_blank">here</a>.</p>
+            <p class="text-muted mb-5">The application main page has a list of products with filtering and pagination. Apart from that the app allows adding, editing and removing items. Also it displays a list of users and allows managing users as well. Access to functional features is granted to users according to the roles assigned. The application provides a RESTful API for the Product resource as well. The API covers all the CRUD operations. More details you may find on the <i>Help</i> page.</p>        
+            <h3 style="color: #6f42c1;">Users</h3>            
+            <p><b>user</b><span class="text-muted"> - is able to see products only (password <i>user</i>).</span></p>
+            <p><b>superuser</b><span class="text-muted"> - has full access to the Products page and can see the list of users  (password <i>superuser</i>).</span></p>
+            <p><b>admin</b><span class="text-muted"> - has full access (password <i>admin</i>).</span></p>            
+        </div>        
+    </main>
+
+    <footer th:replace="fragments/footer.html :: footer" class="footer mt-auto py-3">
+    </footer>
+</body>
+
+</html>
