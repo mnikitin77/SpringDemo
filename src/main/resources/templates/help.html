@@ -37,18 +37,34 @@
             <h3 style="color: #6f42c1;">REST API</h3>            
             <p>HTTP requests of this API to the Product resource require authorization. There are two users in the DB - <b>api-user</b> (password <i>Apiuser0#</i>) with the role ROLE_API_PRODUCT_READ and <b>api-admin</b> (password <i>Apiadmin0#</i>) with the role ROLE_API_PRODUCT_ALL.</p>
             <p><b>GET</b></p>
-            <p><span class="text-monospace">http://localhost:8080/spring/api/v1/products</span> - to retrieve all the items.</p>
-            <p>To retrieve a certain item you should add its ID, i.e. <span class="text-monospace">http://localhost:8080/spring/api/v1/products/3</span>.</p>
+            <p><code>http://localhost:8080/spring/api/v1/products</code> - to retrieve all the items.</p>
+            <p>To retrieve a certain item you should add its ID, i.e. <code>http://localhost:8080/spring/api/v1/products/3</code>.</p>
             <p><b>POST</b></p>
-            <p>You should use the POST method to the same URI (<span class="text-monospace">http://localhost:8080/spring/api/v1/products</span>) if you need to add a new item. To do that you must add a header <span class="text-monospace">Content-Type</span> set to <span class="text-monospace">application/json</span> and provide the request body with JSON.</p>
-            <p>Example:</p>
-            <p class="text-monospace">{"id": -1, "name": "New product", "price": 321.45}</p>
+            <p>You should use the POST method to the same URI (<code>http://localhost:8080/spring/api/v1/products</code>) if you need to add a new item. To do that you must add a header <code>Content-Type</code> set to <code>application/json</code> and provide the request body with JSON.</p>
+            <p>Example:</p>            
+            <pre>
+                <code>
+            {
+                "id": -1,
+                "name": "New product", 
+                "price": 321.45
+            }
+                </code>
+            </pre>
             <p><b>PUT</b></p>
-            <p>Send a PUT request to the above mentioned URI in case you need to modify an item. To do so add a header <span class="text-monospace">Content-Type</span> set to <span class="text-monospace">application/json</span> and provide the request body with JSON specifying the ID of the item.</p>
+            <p>Send a PUT request to the above mentioned URI in case you need to modify an item. To do so add a header <code>Content-Type</code> set to <code>application/json</code> and provide the request body with JSON specifying the ID of the item.</p>
             <p>Example:</p>
-            <p class="text-monospace">{"id": 100500, "name": "New product", "price": 123.45}</p>
+            <pre>
+                <code>
+            {
+                "id": 100500, 
+                "name": "New product", 
+                "price": 123.45
+            }
+                </code>
+            </pre>
             <p><b>DELETE</b></p>
-            <p>To delete an item send a DELETE request to the URI specifying the ID of the required item like this <span class="text-monospace">http://localhost:8080/spring/api/v1/products/21</span>. The method returns the deleted item in JSON.</p>
+            <p>To delete an item send a DELETE request to the URI specifying the ID of the required item like this <code>http://localhost:8080/spring/api/v1/products/21</code>. The method returns the deleted item as a JSON document.</p>
         </div>      
     </main>
 

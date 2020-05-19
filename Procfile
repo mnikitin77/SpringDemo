@@ -1,0 +1,1 @@
+web: java -jar target/SpringDemo-1.0-SNAPSHOT.jar
