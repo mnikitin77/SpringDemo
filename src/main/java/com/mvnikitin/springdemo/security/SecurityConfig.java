@@ -38,46 +38,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return auth;
     }
 
-    @Configuration
-    @Order(1)
-    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .antMatcher("/api/**")
-                    .authorizeRequests()
-                    .anyRequest()
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf().ignoringAntMatchers("/api/**")
+                .and()
+            .authorizeRequests()
+                .antMatchers("/api/**")
                     .hasAnyRole("API_PRODUCT_READ", "API_PRODUCT_ALL")
-                    .and()
-                .httpBasic(Customizer.withDefaults())
-                    .csrf().disable()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        }
-    }
-
-    @Configuration
-    @Order(2)
-    public static class UiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                .authorizeRequests()
-                    .antMatchers("/").hasRole("USER")
-                    .antMatchers("/product/**", "/userlist", "/edit/**" )
+                .antMatchers("/css/**", "/login*", "/logout*").permitAll()
+                .antMatchers("/user/**" ).hasRole("ADMIN")
+                .antMatchers("/product/**", "/userlist/**")
                     .hasAnyRole("ADMIN", "SUPERUSER")
-                    .antMatchers("/userlist/**", "/user/**" ).hasRole("ADMIN")
-                    .antMatchers("/css*", "/login*", "/logout*").permitAll()
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/", true)
-                    .permitAll()
-                    .and()
-                .logout()
-                    .permitAll();
-        }
+                .antMatchers("/", "/help").hasRole("USER")
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true)
+                .and()
+            .logout()
+                .and()
+            .httpBasic();
     }
 }

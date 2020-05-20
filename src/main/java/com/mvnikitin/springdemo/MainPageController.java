@@ -55,6 +55,8 @@ public class MainPageController {
         uiModel.addAttribute("itemscount", rows.get());
         uiModel.addAttribute("sortby", sortBy.orElse(null));
         uiModel.addAttribute("sortdir", sortDirection.orElse(null));
+        uiModel.addAttribute("minprice", minPrice.orElse(null));
+        uiModel.addAttribute("maxprice", maxPrice.orElse(null));
 
         return "index";
     }
